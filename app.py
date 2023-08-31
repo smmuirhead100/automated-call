@@ -11,37 +11,47 @@ account_sid = "ACb5dc263a131004df9af7c5f3c3607450"
 auth_token = os.environ.get("TWILIO_AUTH_TOKEN")
 client = Client(account_sid, auth_token)
 
-# Survey Data
+# Load survey data
 with open('survey.json') as f:
     survey_data = json.load(f)
+    survey = survey_data['survey']
 
 app = Flask(__name__)
-
-question = "what is your name?"
 
 @app.route("/voice", methods=['GET', 'POST'])
 def voice():
     response = VoiceResponse()
-    response.say("Hello, thank you for calling. Please andwer the following questions accordingly.")
-    ask_name(response)
+    welcome(response)
+    ask_questions(response)
     return str(response)
 
-def ask_name(response):
-    name = "name"
-    gather = Gather(input="speech", action=url_for('completed', id=name), timeout=3)
-    gather.say("what is your name")
+def welcome(response):
+    response.say("Hello. Please answer the following questions to schedule an appointment.")
+    return str(response)
+    
+def ask_questions(response):
+    response.redirect(url=url_for('ask', id=0), method='GET')
+    return str(response)
+
+@app.route("/ask/<id>", methods=['GET'])
+def ask(id):
+    response = VoiceResponse()
+    question = survey[int(id)]['question']
+    gather = Gather(input="speech", action=url_for('completed', id=int(id)), speechTimeout=4)
+    gather.say(question)
     response.append(gather)
-
+    response.say("I'm not sure I got that.")
+    response.redirect(url=url_for('ask', id=(int(id))), method='GET')
     return str(response)
 
-@app.route("/completed/<name>", methods=['GET', 'POST'])
+@app.route("/completed/<id>", methods=['GET', 'POST'])
 def completed(id):
     print(id)
-    print("WE REACHED IT")
+    response = VoiceResponse()
     if request.values.get('SpeechResult'): 
         print(request.values.get('SpeechResult'))
-        
-    return ''
+        response.redirect(url=url_for('ask', id=(int(id)+1)), method='GET')
+    return str(response)
     
 if __name__ == "__main__":
     app.run(debug=True)
