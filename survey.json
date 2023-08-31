@@ -1,0 +1,14 @@
+{
+    "survey": 
+        [
+            {"id": 0, "question": "What is your first and last name?", "answer": ""},
+            {"id": 1, "question": "What is your date of birth?", "answer": ""},
+            {"id": 2, "question": "What is your insurance payer name?", "answer": ""},
+            {"id": 3, "question": "What is your insurance payer ID?", "answer": ""},
+            {"id": 4, "question": "If you have a referral, please say to who it is for now?", "answer": ""},
+            {"id": 5, "question": "Please state the reason you are coming in today.", "answer": ""},
+            {"id": 6, "question": "Please state your current home address.", "answer": ""},
+            {"id": 7, "question": "Please state your phone number.", "answer": ""},
+            {"id": 8, "question": "Please state your email address.", "answer": ""}
+        ]
+}
