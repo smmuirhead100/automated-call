@@ -1,6 +1,7 @@
 import os
 import json
 from dotenv import load_dotenv
+from chatbot import is_valid_answer
 from flask import url_for, request, session, Flask
 from twilio.twiml.voice_response import Gather, VoiceResponse
 from twilio.rest import Client
@@ -39,7 +40,7 @@ def ask(id):
     response = VoiceResponse()
     if len(survey) > id: 
         question = survey[id]['question']
-        gather = Gather(input="speech", action=url_for('completed', id=id), speechTimeout=1)
+        gather = Gather(input="speech", action=url_for('completed', id=id, question=question), speechTimeout=3)
         gather.say(question)
         response.append(gather)
         response.say("I'm not sure I got that.")
@@ -47,15 +48,21 @@ def ask(id):
         return str(response)
     else:
         response.say("Thank you for you're cooperation. A link will be sent to your phone number to confirm your appointment. Goodbye!")
+        # TODO: add object to database
         return(str(response))
 
-@app.route("/completed/<id>", methods=['GET', 'POST'])
-def completed(id):
-    print(id)
+@app.route("/completed/<id>/<question>", methods=['GET', 'POST'])
+def completed(id, question):
     response = VoiceResponse()
-    print(request.values.get('SpeechResult'))
-    response.redirect(url=url_for('ask', id=(int(id)+1)), method='GET')
-    return str(response)
+    answer = (request.values.get('SpeechResult'))
+    valid = is_valid_answer(question, answer)
+    if valid != "not valid":
+        response.redirect(url=url_for('ask', id=(int(id)+1)), method='GET')
+        return str(response)
+    else: 
+        response.say("That does not seem to be a valid response")
+        response.redirect(url=url_for('ask', id=(int(id))), method='GET')
+        return str(response)
     
 if __name__ == "__main__":
     app.run(debug=True)
