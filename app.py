@@ -2,6 +2,7 @@ import os
 import json
 from dotenv import load_dotenv
 from chatbot import is_valid_answer
+from db import add_to_db
 from flask import url_for, request, session, Flask
 from twilio.twiml.voice_response import Gather, VoiceResponse
 from twilio.rest import Client
@@ -51,8 +52,7 @@ def ask(id):
         return str(response)
     else:
         response.say("Thank you for you're cooperation. A link will be sent to your phone number to confirm your appointment. Goodbye!")
-        # TODO: add object to database
-        print(obj)
+        add_to_db(obj)
         return(str(response))
 
 @app.route("/completed/<id>/<question>/<dataType>", methods=['GET', 'POST'])
