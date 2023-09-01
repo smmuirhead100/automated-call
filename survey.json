@@ -5,7 +5,6 @@
             {"id": 1, "question": "What is your date of birth?", "dataType": "birthday"},
             {"id": 2, "question": "What is your insurance payer name?", "dataType": "insurancePayerName"},
             {"id": 3, "question": "What is your insurance payer ID?", "dataType": "insurancePayerId"},
-            {"id": 4, "question": "If you have a referral, please say to who it is for.", "dataType": "referral"},
             {"id": 5, "question": "Please state the medical reason you are calling for today.", "dataType": "medicalReason"},
             {"id": 6, "question": "Please state your current home address.", "dataType": "homeAddress"},
             {"id": 7, "question": "Please state your phone number.", "dataType": "phone"},
