@@ -44,14 +44,21 @@ def ask(id):
     if len(survey) > id: 
         question = survey[id]['question']
         dataType = survey[id]['dataType']
-        gather = Gather(input="speech", action=url_for('completed', id=id, question=question, dataType=dataType), speechTimeout=2)
+        gather = Gather(input="speech", action=url_for('completed', id=id, question=question, dataType=dataType), speechTimeout=1.5)
         gather.say(question)
         response.append(gather)
         response.say("I'm not sure I got that.")
         response.redirect(url=url_for('ask', id=(id)), method='GET')
         return str(response)
     else:
-        response.say("Thank you for you're cooperation. A link will be sent to your phone number to confirm your appointment. Goodbye!")
+        number = request.values.get('From')
+        print(number)
+        client.messages.create(
+            from_='+16265138074',
+            body= f"This message is to confirm your appointment with {obj['doctor']}, {obj['appointmentTime']}",
+            to=number
+        )
+        response.say("Thank you for you're cooperation. A message will be sent to your phone number to confirm your appointment. Goodbye!")
         add_to_db(obj)
         return(str(response))
 
