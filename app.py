@@ -1,9 +1,9 @@
 import os
 import json
 from dotenv import load_dotenv
-from chatbot import is_valid_answer
-from sms import send_message
-from db import add_to_db
+from utils.chatbot import is_valid_answer
+from utils.sms import send_message
+from utils.db import add_to_db
 from flask import url_for, request, session, Flask
 from twilio.twiml.voice_response import Gather, VoiceResponse
 from twilio.rest import Client
