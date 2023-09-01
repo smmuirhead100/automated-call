@@ -2,6 +2,7 @@ import os
 import json
 from dotenv import load_dotenv
 from chatbot import is_valid_answer
+from sms import send_message
 from db import add_to_db
 from flask import url_for, request, session, Flask
 from twilio.twiml.voice_response import Gather, VoiceResponse
@@ -52,13 +53,9 @@ def ask(id):
         return str(response)
     else:
         number = request.values.get('From')
-        print(number)
-        client.messages.create(
-            from_='+16265138074',
-            body= f"This message is to confirm your appointment with {obj['doctor']}, {obj['appointmentTime']}",
-            to=number
-        )
+        body = f"This message is to confirm your appointment with {obj['doctor']}, {obj['appointmentTime']}"
         response.say("Thank you for you're cooperation. A message will be sent to your phone number to confirm your appointment. Goodbye!")
+        send_message(number, body)
         add_to_db(obj)
         return(str(response))
 
