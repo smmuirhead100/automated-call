@@ -15,3 +15,5 @@ def send_message(number, body):
             body= body,
             to=number
         )
+    
+    print(message)      # Try to find out why message does not always send in runtime.
