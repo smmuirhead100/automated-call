@@ -19,6 +19,8 @@ with open('survey.json') as f:
 
 app = Flask(__name__)
 
+obj = {}
+
 @app.route("/voice", methods=['GET', 'POST'])
 def voice():
     response = VoiceResponse()
@@ -40,7 +42,8 @@ def ask(id):
     response = VoiceResponse()
     if len(survey) > id: 
         question = survey[id]['question']
-        gather = Gather(input="speech", action=url_for('completed', id=id, question=question), speechTimeout=3)
+        dataType = survey[id]['dataType']
+        gather = Gather(input="speech", action=url_for('completed', id=id, question=question, dataType=dataType), speechTimeout=2)
         gather.say(question)
         response.append(gather)
         response.say("I'm not sure I got that.")
@@ -49,14 +52,16 @@ def ask(id):
     else:
         response.say("Thank you for you're cooperation. A link will be sent to your phone number to confirm your appointment. Goodbye!")
         # TODO: add object to database
+        print(obj)
         return(str(response))
 
-@app.route("/completed/<id>/<question>", methods=['GET', 'POST'])
-def completed(id, question):
+@app.route("/completed/<id>/<question>/<dataType>", methods=['GET', 'POST'])
+def completed(id, question, dataType):
     response = VoiceResponse()
     answer = (request.values.get('SpeechResult'))
     valid = is_valid_answer(question, answer)
     if valid != "not valid":
+        obj[dataType] = valid
         response.redirect(url=url_for('ask', id=(int(id)+1)), method='GET')
         return str(response)
     else: 
