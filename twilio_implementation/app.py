@@ -7,6 +7,7 @@ from utils.db import add_to_db
 from flask import url_for, request, session, Flask
 from twilio.twiml.voice_response import Gather, VoiceResponse
 from twilio.rest import Client
+from flask_cors import CORS
 load_dotenv()
 
 # Twilio account connection
@@ -20,6 +21,7 @@ with open('survey.json') as f:
     survey = survey_data['survey']
 
 app = Flask(__name__)
+CORS(app)
 
 obj = {}
 
@@ -72,6 +74,20 @@ def completed(id, question, dataType):
         response.say("That does not seem to be a valid response")
         response.redirect(url=url_for('ask', id=(int(id))), method='GET')
         return str(response)
+    
+@app.route("/complete", methods=['POST'])
+def complete():
+    app.logger.info(request.json)
+    # Ensure the request is a POST request
+    if request.method == 'POST':
+        # Assuming the data sent by Vocode contains the call transcript
+        call_transcript = request.json.get('transcript')
+        
+        # Process the call transcript as needed (e.g., save it to a file, log it, or perform further actions)
+        print("Received call transcript:", call_transcript)
+
+        # Respond with a success message
+        return jsonify({"message": "Call transcript received and processed successfully"})
     
 if __name__ == "__main__":
     app.run(debug=True)
