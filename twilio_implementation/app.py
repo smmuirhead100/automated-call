@@ -4,11 +4,10 @@ from dotenv import load_dotenv
 from utils.chatbot import is_valid_answer
 from utils.sms import send_message
 from utils.db import add_to_db
-from flask import url_for, request, session, Flask
 from twilio.twiml.voice_response import Gather, VoiceResponse
 from twilio.rest import Client
 from flask_cors import CORS
-import jsonify
+from flask import Flask, jsonify, request, url_for
 load_dotenv()
 
 # Twilio account connection
@@ -79,16 +78,22 @@ def completed(id, question, dataType):
 @app.route("/complete", methods=['POST'])
 def complete():
     app.logger.info(request.json)
-    # Ensure the request is a POST request
+    
     if request.method == 'POST':
-        # Assuming the data sent by Vocode contains the call transcript
-        call_transcript = request.json.get('transcript')
-        
-        # Process the call transcript as needed (e.g., save it to a file, log it, or perform further actions)
-        print("Received call transcript:", call_transcript)
-
-        # Respond with a success message
-        return jsonify({"message": "Call transcript received and processed successfully"})
+        try:
+            # Assuming the data sent by Vocode contains the call transcript
+            call_transcript = request.json.get('transcript')
+            
+            if call_transcript:
+                # Process the call transcript as needed (e.g., save it to a file, log it, or perform further actions)
+                print("Received call transcript:", call_transcript)
+                
+                # Respond with a success message
+                return jsonify({"message": "Call transcript received and processed successfully"})
+            else:
+                return jsonify({"error": "No 'transcript' key found in the JSON data"}), 400
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
     
 if __name__ == "__main__":
     app.run(debug=True)
