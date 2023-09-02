@@ -81,6 +81,7 @@ def complete():
     
     if request.method == 'POST':
         try:
+            print(request.json)
             # Assuming the data sent by Vocode contains the call transcript
             call_transcript = request.json.get('transcript')
             
