@@ -20,6 +20,7 @@ openai==0.28.0
 packaging==23.1
 py-dotenv==0.1
 PyJWT==2.8.0
+python-dotenv==1.0.0
 pytz==2023.3
 requests==2.31.0
 tqdm==4.66.1
