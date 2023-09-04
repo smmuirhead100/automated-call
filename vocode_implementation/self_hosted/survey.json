@@ -1,0 +1,20 @@
+{
+    "surveyModel": 
+    [
+            "name", "birthday", "insurancePayerName", "insurancePayerId","medicalReason", "homeAddress", "phone","email","doctor","appointmentTime", "complete"
+    ],
+    "survey": 
+        [
+            {"id": 0, "question": "What is your first and last name?", "dataType": "name", "required": true},
+            {"id": 1, "question": "What is your date of birth?", "dataType": "birthday", "required": true},
+            {"id": 2, "question": "What is your insurance payer name?", "dataType": "insurancePayerName", "required": false},
+            {"id": 3, "question": "What is your insurance payer ID?", "dataType": "insurancePayerId", "required": false},
+            {"id": 4, "question": "If you have a referral today, please say it now.", "dataType": "referral", "required": false},
+            {"id": 5, "question": "Please state the medical reason you are calling for today.", "dataType": "medicalReason", "required": true},
+            {"id": 6, "question": "Please state your current home address.", "dataType": "homeAddress", "required": true},
+            {"id": 7, "question": "Please state your phone number.", "dataType": "phoneNumber", "required": true},
+            {"id": 8, "question": "Please state your email address.", "dataType": "email", "required": false},
+            {"id": 9, "question": "We've succesfully matched you with 3 great medical providers! Please choose who you'd like to see: Doctor John Doe, doctor Sarah Smith, or doctor Jane Doe", "dataType": "doctor", "required": true},
+            {"id": 8, "question": "Please select when to meet with your doctor: Tomorrow at 10am, tomorrow at 3pm, or Wednesday at 10am.", "dataType": "appointmentTime", "required": true}
+        ]
+}

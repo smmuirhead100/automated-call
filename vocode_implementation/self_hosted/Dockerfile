@@ -14,6 +14,9 @@ RUN pip install --no-cache-dir --upgrade poetry
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-dev --no-interaction --no-ansi
 COPY main.py /code/main.py
-COPY speller_agent.py /code/speller_agent.py
+COPY survey.json /code/survey.json
+COPY utils/chatbot.py /code/utils/chatbot.py
+COPY utils/db.py /code/utils/db.py
+
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "3000"]
