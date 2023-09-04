@@ -17,6 +17,7 @@ COPY main.py /code/main.py
 COPY survey.json /code/survey.json
 COPY utils/chatbot.py /code/utils/chatbot.py
 COPY utils/db.py /code/utils/db.py
+COPY utils/sms.py /code/utils/sms.py
 
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "3000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]

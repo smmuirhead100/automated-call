@@ -19,6 +19,6 @@ def add_to_db(obj):
     response = requests.post(endpoint_url, json=[obj], headers=headers)
     
     if response.status_code == 201:
-        return("Data inserted successfully!")
+        return obj
     else:
         return(response.text)
