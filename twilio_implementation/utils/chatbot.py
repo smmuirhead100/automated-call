@@ -3,11 +3,11 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-def is_valid_answer(question, answer):
+def is_valid_answer(json_format, transcript):
     openai.api_key = os.environ.get('OPENAI_KEY')
     
-    conversation = [{"role": "system", "content": "You will be presented with a question and answer. Determine if the answer is a valid response to that question. If it is, respond with ONLY with the characters / words that you think are a valid answer. If it is not a valid answer, respond with only `not valid`. Be lenient with home adresses. It is okay to not have a referral."},
-                    {"role": "user", "content": f"{question}: {answer}"}]
+    conversation = [{"role": "system", "content": "You will be given a desired json format and a call transcript to parse. Your job is to parse the call transcript and place the appropriate values in the json object. Return noly the json object."},
+                    {"role": "user", "content": f"Desired Format: {json_format}, Transcript: {transcript}"}]
     
     completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=conversation) 
         

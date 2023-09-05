@@ -1,7 +1,7 @@
 {
     "surveyModel": 
     [
-            "name", "birthday", "insurancePayerName", "insurancePayerId","medicalReason", "homeAddress", "phone","email","doctor","appointmentTime", "complete"
+            "name", "birthday", "insurancePayerName", "insurancePayerId","medicalReason", "homeAddress", "phone","email","doctor","appointmentTime"
     ],
     "survey": 
         [

@@ -9,11 +9,12 @@ def send_message(number, body):
     auth_token = os.environ.get("TWILIO_AUTH_TOKEN_02")
     client = Client(account_sid, auth_token)
     
-    # Send Message
-    message = client.messages.create(
+    try:
+        message = client.messages.create(
             from_='+16265138074',
-            body= body,
+            body=body,
             to=number
         )
-    
-    print(message)      # Try to find out why message does not always send in runtime.
+        return("Message sent successfully:", message.sid)
+    except Exception as e:
+        return("Error sending message:", str(e))

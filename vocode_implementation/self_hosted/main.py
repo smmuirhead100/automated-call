@@ -2,7 +2,6 @@ import logging
 import os
 import typing
 import json
-from pyngrok import ngrok
 from fastapi import FastAPI
 from utils.chatbot import parse_answers
 from utils.db import add_to_db
@@ -18,6 +17,9 @@ from vocode.streaming.models.transcript import TranscriptCompleteEvent
 from vocode.streaming.models.message import BaseMessage
 from vocode.streaming.telephony.server.base import TwilioInboundCallConfig, TelephonyServer
 from vocode.streaming.models.transcript import Transcript, TranscriptCompleteEvent
+from vocode.streaming.models.synthesizer import ElevenLabsSynthesizerConfig
+from vocode.streaming.models.audio_encoding import AudioEncoding
+#--------------------------------------#
 
 # App Config
 app = FastAPI(docs_url=None)
@@ -57,7 +59,8 @@ class EventsManager(events_manager.EventsManager):
             logger.info(returnObj)
             addedInfo = add_to_db(returnObj)
             logger.info(addedInfo)
-            send_message(self.from_number, f"This message is to confirm your appointment with {addedInfo['doctor']} at {addedInfo['appointmentTime']}")
+            message = send_message(self.from_number, f"This message is to confirm your appointment with {addedInfo['doctor']} at {addedInfo['appointmentTime']}")
+            logger.info(message)
 
 events_manager_instance = EventsManager()
 
@@ -75,7 +78,13 @@ telephony_server = TelephonyServer(
             twilio_config=TwilioConfig(
                 account_sid=os.environ["TWILIO_ACCOUNT_SID"],
                 auth_token=os.environ["TWILIO_AUTH_TOKEN"],
-            ),
+            )
+            # synthesizer_config=ElevenLabsSynthesizerConfig(
+            #     api_key=os.environ.get("ELEVEN_LABS_API_KEY"),
+            #     voice_id="uxKr2vlA4hYgXZR1oPRT",
+            #     sampling_rate=16000,
+            #     audio_encoding=AudioEncoding.LINEAR16
+            # )
         )
     ],
     events_manager=events_manager_instance,

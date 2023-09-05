@@ -78,7 +78,7 @@ def completed(id, question, dataType):
 @app.route("/complete", methods=['POST'])
 def complete():
     app.logger.info(request.json)
-    
+    print(request.json)
     if request.method == 'POST':
         try:
             print(request.json)
